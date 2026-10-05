@@ -28,7 +28,7 @@ export function routes({ accounts, steps, now = () => new Date() }: Deps) {
                 const project = await requireProject(accounts, principal, req.projectId);
                 const rows = validateReport(req, now());
                 const replaced = await steps.hasBuild(project.id, req.buildId);
-                await steps.insertBuild({ orgId: project.orgId, projectId: project.id, buildId: req.buildId, gitRef: req.gitRef, steps: rows });
+                await steps.insertBuild({ orgId: project.orgId, projectId: project.id, buildId: req.buildId, gitRef: req.gitRef, steps: rows }, { replacing: replaced });
                 return { acceptedSteps: rows.length, replaced };
             },
         });
