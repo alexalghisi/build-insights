@@ -14,6 +14,7 @@ message ListProjectsRequest {}
 message Project {
   string id = 1;
   string name = 2;
+  string org_id = 3;
 }
 
 message ListProjectsResponse {
