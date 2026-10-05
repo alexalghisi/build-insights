@@ -1,0 +1,14 @@
+services:
+    mysql:
+        image: mysql:8.4
+        environment:
+            MYSQL_DATABASE: buildlog
+            MYSQL_USER: buildlog
+            MYSQL_PASSWORD: buildlog
+            MYSQL_ROOT_PASSWORD: root
+        ports: ["3306:3306"]
+    clickhouse:
+        image: clickhouse/clickhouse-server:25.8
+        environment:
+            CLICKHOUSE_SKIP_USER_SETUP: "1"
+        ports: ["8123:8123"]
