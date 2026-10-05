@@ -1,0 +1,33 @@
+{
+    "name": "build-insights",
+    "private": true,
+    "version": "0.1.0",
+    "description": "Build step analytics for CI: Connect RPC API on MySQL and ClickHouse, React console, Go CLI",
+    "type": "module",
+    "license": "MIT",
+    "dependencies": {
+        "@bufbuild/protobuf": "^2.16.0",
+        "@clickhouse/client": "^1.23.1",
+        "@connectrpc/connect": "^2.2.0",
+        "@connectrpc/connect-node": "^2.2.0",
+        "mysql2": "^3.24.5",
+        "zod": "^4.6.5"
+    },
+    "devDependencies": {
+        "@bufbuild/buf": "^1.73.0",
+        "@bufbuild/protoc-gen-es": "^2.16.0",
+        "@types/node": "^22.20.5",
+        "typescript": "~5.9",
+        "vitest": "^3.2.7"
+    },
+    "scripts": {
+        "generate": "buf lint && buf generate",
+        "typecheck": "tsc --noEmit",
+        "test": "vitest run",
+        "start": "node src/main.ts",
+        "seed": "node src/seed.ts"
+    },
+    "engines": {
+        "node": ">=22"
+    }
+}
