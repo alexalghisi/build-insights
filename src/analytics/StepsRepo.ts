@@ -92,28 +92,37 @@ export class StepsRepo {
     }
 
     /** Replaces the build's steps. A shorter re-report removes the extra steps of the earlier one. */
-    async insertBuild(build: BuildReport): Promise<void> {
+    async insertBuild(build: BuildReport, options: { replacing: boolean }): Promise<void> {
+        if (options.replacing) {
+            await this.#ch.command({
+                query: "DELETE FROM build_steps WHERE project_id = {projectId:String} AND build_id = {buildId:String} AND step_index >= {count:UInt16}",
+                query_params: { projectId: build.projectId, buildId: build.buildId, count: build.steps.length },
+            });
+        }
+        await this.insertNew([build]);
+    }
+
+    /** Inserts builds that haven't been reported before, in one batch. */
+    async insertNew(builds: readonly BuildReport[]): Promise<void> {
         const version = nextVersion();
-        await this.#ch.command({
-            query: "DELETE FROM build_steps WHERE project_id = {projectId:String} AND build_id = {buildId:String} AND step_index >= {count:UInt16}",
-            query_params: { projectId: build.projectId, buildId: build.buildId, count: build.steps.length },
-        });
         await this.#ch.insert({
             table: "build_steps",
             format: "JSONEachRow",
-            values: build.steps.map((step, index) => ({
-                org_id: build.orgId,
-                project_id: build.projectId,
-                build_id: build.buildId,
-                git_ref: build.gitRef,
-                step_index: index,
-                step_name: step.name,
-                started_at: step.startedAt.toISOString(),
-                duration_ms: step.durationMs,
-                cached: step.cached,
-                exit_code: step.exitCode,
-                version,
-            })),
+            values: builds.flatMap((build) =>
+                build.steps.map((step, index) => ({
+                    org_id: build.orgId,
+                    project_id: build.projectId,
+                    build_id: build.buildId,
+                    git_ref: build.gitRef,
+                    step_index: index,
+                    step_name: step.name,
+                    started_at: step.startedAt.toISOString(),
+                    duration_ms: step.durationMs,
+                    cached: step.cached,
+                    exit_code: step.exitCode,
+                    version,
+                })),
+            ),
             clickhouse_settings: { date_time_input_format: "best_effort" },
         });
     }
