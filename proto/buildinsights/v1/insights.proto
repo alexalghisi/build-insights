@@ -1,0 +1,61 @@
+syntax = "proto3";
+
+package buildinsights.v1;
+
+// Where build time goes, per project.
+service InsightsService {
+  rpc ListProjects(ListProjectsRequest) returns (ListProjectsResponse);
+  rpc GetStepStats(GetStepStatsRequest) returns (GetStepStatsResponse);
+  rpc GetTrend(GetTrendRequest) returns (GetTrendResponse);
+}
+
+message ListProjectsRequest {}
+
+message Project {
+  string id = 1;
+  string name = 2;
+}
+
+message ListProjectsResponse {
+  repeated Project projects = 1;
+}
+
+message GetStepStatsRequest {
+  string project_id = 1;
+  // Days to look back, 1 to 90. Defaults to 14.
+  uint32 window_days = 2;
+}
+
+message StepStats {
+  string name = 1;
+  uint32 runs = 2;
+  uint32 p50_ms = 3;
+  uint32 p95_ms = 4;
+  // Share of runs served from cache, 0 to 1.
+  double cache_hit_rate = 5;
+  // Share of the project's total step time spent in this step, 0 to 1.
+  double share_of_time = 6;
+}
+
+message GetStepStatsResponse {
+  repeated StepStats steps = 1;
+  uint32 builds = 2;
+}
+
+message GetTrendRequest {
+  string project_id = 1;
+  uint32 window_days = 2;
+}
+
+message DailyPoint {
+  // ISO date, UTC.
+  string day = 1;
+  uint32 builds = 2;
+  uint32 p50_build_ms = 3;
+  uint32 p95_build_ms = 4;
+  double cache_hit_rate = 5;
+}
+
+message GetTrendResponse {
+  repeated DailyPoint days = 1;
+}

@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package buildinsights.v1;
+
+// Build minutes and what they cost.
+service UsageService {
+  rpc GetUsage(GetUsageRequest) returns (GetUsageResponse);
+}
+
+message GetUsageRequest {
+  string org_id = 1;
+  // Calendar month, "YYYY-MM", UTC.
+  string month = 2;
+}
+
+message DailyUsage {
+  string day = 1;
+  uint32 builds = 2;
+  uint32 build_minutes = 3;
+}
+
+message GetUsageResponse {
+  uint32 build_minutes = 1;
+  uint32 included_minutes = 2;
+  uint32 overage_minutes = 3;
+  uint32 overage_cents = 4;
+  repeated DailyUsage days = 5;
+}
