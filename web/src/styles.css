@@ -1,0 +1,367 @@
+:root {
+    --bg: #f6f7f9;
+    --panel: #fff;
+    --text: #15171c;
+    --muted: #697080;
+    --border: #e2e4ea;
+    --accent: #5b5bd6;
+    --p95: #f0a35b;
+    --good: #1f8a4c;
+    --warn: #b7791f;
+    color-scheme: light;
+    font: 14px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif;
+    color: var(--text);
+    background: var(--bg);
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg: #0f1115;
+        --panel: #171a21;
+        --text: #e8e9ee;
+        --muted: #949bab;
+        --border: #2a2f3a;
+        --accent: #8d8cff;
+        color-scheme: dark;
+    }
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+}
+
+button,
+select,
+input {
+    font: inherit;
+    color: inherit;
+}
+
+button,
+select {
+    border: 1px solid var(--border);
+    background: var(--panel);
+    border-radius: 6px;
+    padding: 4px 10px;
+    cursor: pointer;
+}
+
+button[aria-pressed="true"] {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+}
+
+button.link {
+    border: 0;
+    background: none;
+    color: var(--muted);
+}
+
+.muted,
+.empty {
+    color: var(--muted);
+}
+
+.signin {
+    max-width: 380px;
+    margin: 12vh auto;
+    display: grid;
+    gap: 10px;
+    padding: 24px;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+}
+
+.signin input {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 8px;
+    background: var(--bg);
+}
+
+.error {
+    color: #c62828;
+}
+
+.dashboard {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 20px 16px 40px;
+}
+
+.dashboard header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.dashboard h1 {
+    font-size: 20px;
+    margin: 0 12px 0 0;
+}
+
+nav {
+    display: flex;
+    gap: 6px;
+}
+
+.window {
+    margin-left: auto;
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    color: var(--muted);
+}
+
+.cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.card,
+.trend,
+.steps {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+}
+
+.card {
+    padding: 14px 16px;
+}
+
+.card h2 {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--muted);
+    margin: 0 0 6px;
+}
+
+.big {
+    font-size: 26px;
+    font-weight: 650;
+    margin: 0;
+}
+
+.big .muted {
+    font-size: 14px;
+    font-weight: 400;
+}
+
+.card p {
+    margin: 2px 0 0;
+}
+
+.meter {
+    height: 8px;
+    border-radius: 4px;
+    background: var(--border);
+    margin: 8px 0 4px;
+    overflow: hidden;
+}
+
+.meter > div {
+    height: 100%;
+    background: var(--accent);
+}
+
+.meter > .over {
+    background: #d9534f;
+}
+
+.trend {
+    margin: 0 0 16px;
+    padding: 14px 16px 8px;
+}
+
+.trend figcaption {
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+
+.delta {
+    font-weight: 400;
+    color: var(--muted);
+    margin-left: 10px;
+}
+
+.trend svg {
+    width: 100%;
+    height: auto;
+}
+
+.grid {
+    stroke: var(--border);
+}
+
+.tick {
+    font-size: 12px;
+    fill: var(--muted);
+}
+
+.line {
+    fill: none;
+    stroke-width: 2;
+}
+
+.line.p50 {
+    stroke: var(--accent);
+}
+
+.line.p95 {
+    stroke: var(--p95);
+}
+
+rect.hits {
+    fill: var(--good);
+    opacity: 0.6;
+}
+
+.legend {
+    display: flex;
+    gap: 16px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    font-size: 12px;
+    color: var(--muted);
+}
+
+.legend li::before {
+    content: "";
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+    margin-right: 6px;
+    vertical-align: -1px;
+}
+
+.legend .p50::before {
+    background: var(--accent);
+}
+
+.legend .p95::before {
+    background: var(--p95);
+}
+
+.legend .hits::before {
+    background: var(--good);
+    opacity: 0.6;
+}
+
+.steps {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    overflow: hidden;
+}
+
+.steps caption {
+    text-align: left;
+    font-weight: 600;
+    padding: 0 0 8px;
+}
+
+.steps th,
+.steps td {
+    padding: 9px 14px;
+    border-bottom: 1px solid var(--border);
+    text-align: left;
+}
+
+.steps thead th {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--muted);
+}
+
+.steps tbody th {
+    font-weight: 550;
+}
+
+.steps tr:last-child > * {
+    border-bottom: 0;
+}
+
+.steps td {
+    position: relative;
+    min-width: 150px;
+}
+
+.num {
+    text-align: right !important;
+    font-variant-numeric: tabular-nums;
+    min-width: 0 !important;
+}
+
+.good {
+    color: var(--good);
+}
+
+.warn {
+    color: var(--warn);
+}
+
+.bar {
+    height: 8px;
+    border-radius: 4px;
+}
+
+.bar.share {
+    background: var(--accent);
+    opacity: 0.75;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 8px;
+    max-width: calc(100% - 48px);
+}
+
+.range {
+    position: relative;
+    height: 8px;
+    margin-bottom: 4px;
+}
+
+.range .bar {
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+.bar.p95 {
+    background: var(--p95);
+    opacity: 0.55;
+}
+
+.bar.p50 {
+    background: var(--accent);
+}
+
+.label {
+    font-size: 12px;
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 640px) {
+    .steps thead {
+        display: none;
+    }
+
+    .window {
+        margin-left: 0;
+    }
+}
