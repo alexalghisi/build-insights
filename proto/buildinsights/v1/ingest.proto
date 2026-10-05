@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+package buildinsights.v1;
+
+import "google/protobuf/timestamp.proto";
+
+// Receives build step timings from CI. Reporting the same build again replaces it.
+service IngestService {
+  rpc ReportBuild(ReportBuildRequest) returns (ReportBuildResponse);
+}
+
+message Step {
+  string name = 1;
+  google.protobuf.Timestamp started_at = 2;
+  uint32 duration_ms = 3;
+  bool cached = 4;
+  int32 exit_code = 5;
+}
+
+message ReportBuildRequest {
+  string project_id = 1;
+  // Unique per project. Retries with the same id replace the earlier report.
+  string build_id = 2;
+  string git_ref = 3;
+  repeated Step steps = 4;
+}
+
+message ReportBuildResponse {
+  uint32 accepted_steps = 1;
+  // True when this build had already been reported and was replaced.
+  bool replaced = 2;
+}
