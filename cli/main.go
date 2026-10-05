@@ -136,10 +136,10 @@ func runStats(ctx context.Context, client *connect.Client, args []string, stdout
 		return err
 	}
 	fmt.Fprintf(stdout, "%d builds in the last %d days\n\n", res.Builds, *days)
-	w := tabwriter.NewWriter(stdout, 0, 0, 2, ' ', tabwriter.AlignRight)
-	fmt.Fprintln(w, "step\truns\tp50\tp95\tcache hits\tshare of time\t")
+	w := tabwriter.NewWriter(stdout, 0, 0, 3, ' ', 0)
+	fmt.Fprintln(w, "step\truns\tp50\tp95\tcache hits\tshare of time")
 	for _, s := range res.Steps {
-		fmt.Fprintf(w, "%s\t%d\t%s\t%s\t%.0f%%\t%.0f%%\t\n", s.Name, s.Runs, seconds(s.P50Ms), seconds(s.P95Ms), s.CacheHitRate*100, s.ShareOfTime*100)
+		fmt.Fprintf(w, "%s\t%d\t%s\t%s\t%.0f%%\t%.0f%%\n", s.Name, s.Runs, seconds(s.P50Ms), seconds(s.P95Ms), s.CacheHitRate*100, s.ShareOfTime*100)
 	}
 	return w.Flush()
 }
